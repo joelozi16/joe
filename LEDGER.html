@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5deb3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar h1 {
+            font-size: 18px;
+            margin: 0;
+            padding-bottom: 20px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 0;
+            font-size: 18px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .ledger-container {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+        .form-container input,
+        .form-container button {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>DENTAL MASTER LABORATORY & SUPPLIES LTD</h1>
+        <a href="home.html">Home</a>
+        <a href="ledger.html">Ledger</a>
+        
+        <a href="login.html">Logout</a>
+    </div>
+    <div class="ledger-container">
+        <h1>Ledger Entry</h1>
+        <div class="form-container">
+            <input type="text" id="customerIdInput" placeholder="Customer ID">
+            <input type="text" id="invoiceNumberInput" placeholder="Invoice Number">
+            <input type="number" id="amountInput" placeholder="Amount (₦)">
+            <input type="number" id="depositInput" placeholder="Deposit (₦)">
+            <button onclick="addLedgerEntry()">Submit</button>
+            <button onclick="clearForm()">Clear</button>
+        </div>
+    </div>
+    <script>
+        function addLedgerEntry() {
+            const customerId = document.getElementById('customerIdInput').value;
+            const invoiceNumber = document.getElementById('invoiceNumberInput').value;
+            const amount = parseFloat(document.getElementById('amountInput').value);
+            const deposit = parseFloat(document.getElementById('depositInput').value);
+            const balance = amount - deposit;
+
+            const newEntry = { customerId, invoiceNumber, amount, deposit, balance };
+            const ledgerEntries = JSON.parse(localStorage.getItem('ledgerEntries')) || [];
+            ledgerEntries.push(newEntry);
+            localStorage.setItem('ledgerEntries', JSON.stringify(ledgerEntries));
+            clearForm();
+        }
+
+        function clearForm() {
+            document.getElementById('customerIdInput').value = '';
+            document.getElementById('invoiceNumberInput').value = '';
+            document.getElementById('amountInput').value = '';
+            document.getElementById('depositInput').value = '';
+        }
+    </script>
+</body>
+</html>
+
+
+

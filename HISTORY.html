@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5deb3;
+            margin: 0;
+            padding: 20px;
+        }
+        .history-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .links a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 0 10px;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .history-table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <h2>Ledger History</h2>
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search by Customer ID...">
+        </div>
+        <table class="history-table" id="historyTable">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Invoice Number</th>
+                    <th>Amount</th>
+                    <th>Deposit</th>
+                    <th>Balance</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example static entries -->
+                <tr>
+                    <td>001</td>
+                    <td>INV1234</td>
+                    <td>$100.00</td>
+                    <td>$50.00</td>
+                    <td>$50.00</td>
+                    <td>2023-08-01</td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>INV1235</td>
+                    <td>$150.00</td>
+                    <td>$60.00</td>
+                    <td>$90.00</td>
+                    <td>2023-08-02</td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>INV1236</td>
+                    <td>$200.00</td>
+                    <td>$80.00</td>
+                    <td>$120.00</td>
+                    <td>2023-08-03</td>
+                </tr>
+                <!-- Add more entries as needed -->
+            </tbody>
+        </table>
+        <div class="links">
+            <a href="home.html">Home</a>
+            <a href="ledger.html">Ledger</a>
+            <a href="login.html">Logout</a>
+        </div>
+    </div>
+    <script>
+        const searchBar = document.getElementById('searchBar');
+        const historyTable = document.getElementById('historyTable');
+        const tableBody = historyTable.getElementsByTagName('tbody')[0];
+
+        searchBar.addEventListener('input', function() {
+            const searchTerm = searchBar.value.toLowerCase();
+            const rows = tableBody.getElementsByTagName('tr');
+            for (let row of rows) {
+                const customerIdCell = row.getElementsByTagName('td')[0];
+                if (customerIdCell.textContent.toLowerCase().includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

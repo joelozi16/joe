@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5deb3;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar h1 {
+            font-size: 18px;
+            margin: 0;
+            padding-bottom: 20px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 0;
+            font-size: 18px;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .home-container {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .ledger-table th, .ledger-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .ledger-table th {
+            background-color: #f2f2f2;
+        }
+        .totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>DENTAL MASTER LABORATORY & SUPPLIES LTD</h1>
+        <a href="home.html">Home</a>
+        <a href="ledger.html">Ledger</a>
+        
+        <a href="login.html">Logout</a>
+    </div>
+    <div class="home-container">
+        <h1>WELCOME TO THE DENTAL LEDGER</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search by Customer ID or Invoice Number" onkeyup="filterTable()">
+        </div>
+        <table class="ledger-table" id="ledgerTable">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Invoice Number</th>
+                    <th>Amount (₦)</th>
+                    <th>Deposit (₦)</th>
+                    <th>Balance (₦)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="ledgerEntries">
+                <!-- Ledger entries will be inserted here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">Totals</th>
+                    <th id="totalAmount">₦0</th>
+                    <th id="totalDeposit">₦0</th>
+                    <th id="totalBalance">₦0</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        function displayLedgerEntries() {
+            const ledgerEntries = JSON.parse(localStorage.getItem('ledgerEntries')) || [];
+            const ledgerEntriesContainer = document.getElementById('ledgerEntries');
+            ledgerEntriesContainer.innerHTML = '';
+            let totalAmount = 0;
+            let totalDeposit = 0;
+            let totalBalance = 0;
+            ledgerEntries.forEach((entry, index) => {
+                totalAmount += entry.amount;
+                totalDeposit += entry.deposit;
+                totalBalance += entry.balance;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td contenteditable="true">${entry.customerId}</td>
+                    <td contenteditable="true">${entry.invoiceNumber}</td>
+                    <td contenteditable="true">₦${entry.amount}</td>
+                    <td contenteditable="true">₦${entry.deposit}</td>
+                    <td contenteditable="true">₦${entry.balance}</td>
+                    <td><button onclick="clearRow(${index})">Clear</button></td>
+                `;
+                ledgerEntriesContainer.appendChild(row);
+            });
+            document.getElementById('totalAmount').textContent = `₦${totalAmount}`;
+            document.getElementById('totalDeposit').textContent = `₦${totalDeposit}`;
+            document.getElementById('totalBalance').textContent = `₦${totalBalance}`;
+        }
+
+        function filterTable() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#ledgerTable tbody tr');
+            rows.forEach(row => {
+                const customerId = row.children[0].textContent.toLowerCase();
+                const invoiceNumber = row.children[1].textContent.toLowerCase();
+                if (customerId.includes(searchInput) || invoiceNumber.includes(searchInput)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function clearRow(index) {
+            const ledgerEntries = JSON.parse(localStorage.getItem('ledgerEntries')) || [];
+            ledgerEntries.splice(index, 1);
+            localStorage.setItem('ledgerEntries', JSON.stringify(ledgerEntries));
+            displayLedgerEntries();
+        }
+
+        window.onload = displayLedgerEntries;
+    </script>
+</body>
+</html>
+
+
